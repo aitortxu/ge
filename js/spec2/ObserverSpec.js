@@ -5,7 +5,7 @@
       Subject = function Subject() {
         this.observerList = [];
       };
-      Observer.prototype = {
+      Subject.prototype = {
         subscribe : function(anotherObserver) {
           this.observerList.push(anotherObserver);
         },
