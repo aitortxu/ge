@@ -50,11 +50,11 @@
       // Unsubscribe from a specific topic, based on a tokenized reference
       // to the subscription
       unsubscribe : function( token ) {
-        for ( var m in topics ) {
-          if ( topics[m] ) {
-            for ( var i = 0, j = topics[m].length; i < j; i++ ) {
-              if ( topics[m][i].token === token) {
-                topics[m].splice( i, 1 );
+        for ( var m in this.topics ) {
+          if ( this.topics[m] ) {
+            for ( var i = 0, j = this.topics[m].length; i < j; i++ ) {
+              if ( this.topics[m][i].token === token) {
+                this.topics[m].splice( i, 1 );
                 return token;
               }
             }
@@ -105,9 +105,11 @@
     // Once unsubscribed, this for example won't result in our
     // messageLogger being executed as the subscriber is
     // no longer listening
-    
+
     publisher.publish( "inbox/newMessage", "Hello! are you still there?" );
     publisher.publish( "unrelatedEvent", "wat????" );
+
+    publisher.unsubscribe( subscription );
 
   });
 
