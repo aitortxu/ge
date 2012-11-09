@@ -62,12 +62,67 @@ describe("Dobles de pruebas manuales", function() {
 					return called;
 				};
 				return spy;
-			})();
+			}());
 
 			objetoOriginal.cocotero = cocoteroSpy;
 			objetoOriginal.cocotero();
 
 			expect(objetoOriginal.cocotero.called()).toBe(true);
+		});
+
+		it("Método 3: función independiente con expect incluido", function() {
+			var cocoteroSpy = (function() {
+				var called = false;
+				var spy = function() {
+					called = true;
+				};
+				spy.toBeCalled = function() {
+					if (!called) {
+						throw "Expected call to cocotero";
+					}
+				};
+				return spy;
+			}());
+
+			objetoOriginal.cocotero = cocoteroSpy;
+			objetoOriginal.cocotero();
+
+			objetoOriginal.cocotero.toBeCalled();
+		});
+
+				it("Método 3: función independiente con expect incluido", function() {
+			var cocoteroSpy = (function() {
+				var called = false;
+				var lastArguments;
+				var spy = function() {
+					called = true;
+					lastArguments = arguments;
+				};
+
+				function areArgumentsIdentical(arguments1, arguments2) {
+					if (arguments1.length != arguments2.length) {
+						return false;
+					}
+					for(x = 0; x < arguments1.length; x++) {
+						if (arguments1[x] !== arguments2[x]) {
+							return false;
+						}
+					}
+					return true;
+				}
+
+				spy.toBeCalledWith = function() {
+					if (!called || !areArgumentsIdentical(arguments, lastArguments)) {
+						throw "Expected call to cocotero with correct params";
+					}
+				};
+				return spy;
+			}());
+
+			objetoOriginal.cocotero = cocoteroSpy;
+			objetoOriginal.cocotero('foo', 'bar');
+
+			objetoOriginal.cocotero.toBeCalledWith('foo', 'bar');
 		});
 	});
 });
