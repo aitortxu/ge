@@ -120,9 +120,9 @@ describe("Dobles de pruebas manuales", function() {
 			}());
 
 			objetoOriginal.cocotero = cocoteroSpy;
-			objetoOriginal.cocotero('foo', 'bar');
+			objetoOriginal.cocotero();
 
-			objetoOriginal.cocotero.toBeCalledWith('foo', 'bar');
+			objetoOriginal.cocotero.toBeCalledWith();
 		});
 	});
 });
