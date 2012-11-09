@@ -70,7 +70,7 @@ describe("Dobles de pruebas manuales", function() {
 			expect(objetoOriginal.cocotero.called()).toBe(true);
 		});
 
-		it("Método 3: función independiente con expect incluido", function() {
+		it("Método 3.1: función independiente con expect incluido", function() {
 			var cocoteroSpy = (function() {
 				var called = false;
 				var spy = function() {
@@ -90,7 +90,7 @@ describe("Dobles de pruebas manuales", function() {
 			objetoOriginal.cocotero.toBeCalled();
 		});
 
-				it("Método 3: función independiente con expect incluido", function() {
+		it("Método 3.2: función independiente con expect incluido", function() {
 			var cocoteroSpy = (function() {
 				var called = false;
 				var lastArguments;
