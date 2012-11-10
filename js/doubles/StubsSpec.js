@@ -1,3 +1,9 @@
+/*
+	Es necesario instalarse jquery en node:
+	npm install jquery
+*/
+var $ = require('jquery');
+
 describe("Stubs manuales", function() {
 
 	var objetoOriginal;
@@ -34,5 +40,16 @@ describe("Stubs manuales", function() {
 		expect(objetoOriginal.cocotero()).toEqual("foo");
 		expect(objetoOriginal.cocotero()).toEqual("bar");
 		expect(objetoOriginal.cocotero()).toEqual("bar");
+	});
+
+	it("Stub de librería de terceros", function() {
+		$.getJSON = function(url, callback) {
+			var response = { name: "foo", email: "bar" };
+			callback(response);
+		};
+		$.getJSON("http://www.users.com/get/5", function(user){
+			expect(user.name).toEqual("foo");
+			expect(user.email).toEqual("bar");
+		});
 	});
 });
