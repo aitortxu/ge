@@ -52,4 +52,22 @@ describe("Stubs manuales", function() {
 			expect(user.email).toEqual("bar");
 		});
 	});
+
+	it("Stub a una función prototipo", function() {
+		var ObjetoPrototipo = function(){};
+		ObjetoPrototipo.prototype.cocotero = function() { throw "oops"; };
+
+		var cocoteroStub = function() {
+			return "foo";
+		};
+
+		objeto1 = new ObjetoPrototipo();
+		objeto2 = new ObjetoPrototipo();
+
+		ObjetoPrototipo.prototype.cocotero = cocoteroStub;
+
+		expect(objeto1.cocotero()).toEqual("foo");
+		expect(objeto2.cocotero()).toEqual("foo");
+
+	});
 });
