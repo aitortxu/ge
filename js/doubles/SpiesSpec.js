@@ -94,4 +94,12 @@ describe("Spies manuales", function() {
 
 		objetoOriginal.cocotero.toBeCalledWith('foo', 'bar');
 	});
+
+	it("Prueba sustitución de parámetro con variable", function(){
+			var cocotero = function(parametro){
+				var parametro = "chipiclander";
+				return parametro;
+			}
+			expect(cocotero("chupachus")).toBe("chupachus");
+	});
 });

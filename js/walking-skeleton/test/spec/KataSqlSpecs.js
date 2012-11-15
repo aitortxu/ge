@@ -1,19 +1,25 @@
-var SqlGenerator = function(table){
-    this.table = table;
-};
+var app = (function(ns, undefined) {
+	'use strict';
+	ns = ns || {};
 
-SqlGenerator.prototype.select = function(){
-    return "SELECT * FROM " + this.table;
-};
+	var SqlGenerator = function(table){
+	    this.table = table;
+	};
 
-describe("sql generator", function(){
+	SqlGenerator.prototype.select = function(){
+	    return 'SELECT * FROM ' + this.table;
+	};
 
-    it("generates simple selects", function(){
+	ns.SqlGenerator = SqlGenerator;
+	return ns;
+}(app));
 
-        var generator = new SqlGenerator("Table");
-        var sql = generator.select();
-        expect(sql).to.be.equal("SELECT * FROM Table");
+describe('sql generator', function(){
+	'use strict';
+  it('generates simple selects', function(){
 
-    });
-
+      var generator = new app.SqlGenerator("Table");
+      var sql = generator.select();
+      expect(sql).to.be.equal("SELECT * FROM Table");
+  });
 });
