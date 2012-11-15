@@ -1,25 +1,5 @@
-var MicroEvent = require('microevent');
 var expect = require('expect.js');
-
-var app = (function(ns, undefined) {
-	'use strict';
-	ns = ns || {};
-
-	var SqlGenerator = function(table){
-	    this.table = table;
-	};
-
-	SqlGenerator.prototype.select = function(){
-	  var result = 'SELECT * FROM ' + this.table;
-	  this.trigger('finished', result);
-	  return result;
-	};
-
-	MicroEvent.mixin(SqlGenerator);
-
-	ns.SqlGenerator = SqlGenerator;
-	return ns;
-}(app));
+var app = require("../src/SqlGenerator.js");
 
 describe('sql generator', function(){
 	'use strict';
