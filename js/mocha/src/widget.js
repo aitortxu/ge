@@ -4,6 +4,7 @@ var widgets = (function(ns, undefined){
 	var CounterWidget = function(dom) {
 		var counter = dom.find(".counter");
 		var minus_button = dom.find(".minus");
+		var plus_button = dom.find(".plus");
 		var counter_value;
 
 		function setValue(newValue) {
@@ -11,31 +12,33 @@ var widgets = (function(ns, undefined){
 			counter.html(counter_value);
 		}
 
-		function minus_clicked() {
-			value(value() - 1);
+		function minus_clicked(event) {
+			event.preventDefault();
+			this.value(this.value() - 1);
 		}
 
-		function initialize() {
-			setValue(1);
-			minus_button.on('click', minus_clicked);
+		function plus_clicked(event) {
+			event.preventDefault();
+			this.value(this.value() + 1);
 		}
 
-		function value(newValue) {
+		this.value = function(newValue) {
 			if (newValue == null) {
 				return counter_value;
 			} else {
 				setValue(newValue);
+				this.trigger("counter_changed", newValue);
 			}
-		}
-
-		initialize();
-
-		return {
-			value: value
 		};
+
+		setValue(1);
+		minus_button.on('click', minus_clicked.bind(this));
+		plus_button.on('click', plus_clicked.bind(this));
+
+		MicroEvent.mixin(CounterWidget);
 	};
 
-	ns.GenerateCounter = GenerateCounter;
+	ns.CounterWidget = CounterWidget;
 
 	if (typeof module !== 'undefined' && 'exports' in module) {
 		module.exports = ns; 
