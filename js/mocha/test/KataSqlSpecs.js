@@ -1,10 +1,3 @@
-/*
-	Necesario instalar:
-		npm install -g mocha
-		npm install expect.js
-		npm install microevent
-*/
-
 var MicroEvent = require('microevent');
 var expect = require('expect.js');
 
