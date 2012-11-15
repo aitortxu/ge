@@ -1,5 +1,6 @@
 /*
 	Necesario instalar:
+		npm install -g mocha
 		npm install expect.js
 		npm install microevent
 */
