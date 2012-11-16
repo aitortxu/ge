@@ -8,6 +8,33 @@ describe("Widget", function(){
 	var widget;
 	var counter;
 
+	function describeButtonResult(button_selector, data) {
+		var button;
+
+		beforeEach(function(){
+			button = dom.find(button_selector);
+		});
+
+		it("should add one when click plus button", function(){
+			widget.value(data.initialValue);
+			button.click();
+
+			expect(widget.value()).to.be(data.finalValue);
+			expect(counter.html()).to.be(data.finalValue.toString());
+		});
+
+		it("trigger counter_changed event with new value", function(done){
+			widget.value(data.initialValue);
+
+			widget.bind("counter_changed", function(value) {
+				expect(value).to.be(data.finalValue);
+				done();
+			});
+
+			button.click();
+		});
+	}
+
 	beforeEach(function(){
 		dom = $("<div><a class='minus'>-</a>" + 
 						"<span class='counter'></span>" + 
@@ -29,56 +56,10 @@ describe("Widget", function(){
 	});
 
 	describe("minus button", function(){
-		var minus_button;
-
-		beforeEach(function(){
-			minus_button = dom.find(".minus");
-		});
-
-		it("should subtract one when click minus button", function(){
-			widget.value(5);
-			minus_button.click();
-
-			expect(widget.value()).to.be(4);
-			expect(counter.html()).to.be("4");
-		});
-
-		it("trigger counter_changed event with new value", function(done){
-			widget.value(5);
-
-			widget.bind("counter_changed", function(value) {
-				expect(value).to.be(4);
-				done();
-			});
-
-			minus_button.click();
-		});
+		describeButtonResult(".minus", { initialValue: 5, finalValue: 4 });
 	});
 
-	describe("plus button", function(){
-		var plus_button;
-
-		beforeEach(function(){
-			plus_button = dom.find(".plus");
-		});
-
-		it("should add one when click plus button", function(){
-			widget.value(5);
-			plus_button.click();
-
-			expect(widget.value()).to.be(6);
-			expect(counter.html()).to.be("6");
-		});
-
-		it("trigger counter_changed event with new value", function(done){
-			widget.value(5);
-
-			widget.bind("counter_changed", function(value) {
-				expect(value).to.be(6);
-				done();
-			});
-
-			plus_button.click();
-		});
+	describe("plus button", function() {
+		describeButtonResult(".plus", { initialValue: 5, finalValue: 6 });
 	});
 });
