@@ -1,6 +1,6 @@
 var MicroEvent = require('microevent');
 
-var app = (function(ns, undefined) {
+var app = (function(ns, MicroEvent, undefined) {
 	'use strict';
 	ns = ns || {};
 
@@ -22,4 +22,4 @@ var app = (function(ns, undefined) {
 		module.exports = ns; 
   }
 	return ns;
-}(app));
+}(app, MicroEvent));
