@@ -1,4 +1,4 @@
-var widgets = (function(ns, undefined){
+var widgets = (function(ns, MicroEvent, undefined){
 	ns = ns || {};
 
 	var CounterWidget = function(dom) {
@@ -45,4 +45,4 @@ var widgets = (function(ns, undefined){
   }
 	return ns;
 
-}(widgets));
+}(widgets, MicroEvent));
