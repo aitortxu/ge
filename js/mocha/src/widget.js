@@ -1,3 +1,5 @@
+var MicroEvent = require("microevent");
+
 var widgets = (function(ns, MicroEvent, undefined){
 	ns = ns || {};
 
