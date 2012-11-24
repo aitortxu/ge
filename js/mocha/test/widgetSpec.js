@@ -1,65 +1,57 @@
-var $ = require("jquery");
-var expect = require("expect.js");
-var widgets = require("../src/widget.js");
-MicroEvent = require("microevent");
+var $ = require("jquery"),
+    expect = require("expect.js"),
+    widgets = require("../src/widget.js"),
+    sinon = require("sinon");
 
-describe("Widget", function(){
-	var dom;
-	var widget;
-	var counter;
+describe("Plus Minus counter widget", function () {
+      var dom = $("<div><a class='minus'>-</a>" +
+              "<span class='counter'></span>" +
+              "<a class='plus'>+</a></div>"),
+          widget, counter, plus, minus;
 
-	function describeButtonResult(button_selector, data) {
-		var button;
+      beforeEach(function () {
+        widget = widgets.CounterWidget.factory(dom, 1);
+        counter = dom.find('.counter');
+        plus = dom.find('.plus');
+        minus = dom.find('.minus');
+      });
 
-		beforeEach(function(){
-			button = dom.find(button_selector);
-		});
+      it("Should initialize count to 1 by default", function () {
+        expect(widget.value).to.be(1);
+        expect(counter.html()).to.be("1");
+      });
 
-		it("should add one when click plus button", function(){
-			widget.value(data.initialValue);
-			button.click();
+      it("We should be able to set an arbitrary initial value", function () {
+        widget.setValue(5);
+        expect(widget.value).to.be(5);
+        expect(counter.html()).to.be("5");
+      });
 
-			expect(widget.value()).to.be(data.finalValue);
-			expect(counter.html()).to.be(data.finalValue.toString());
-		});
+      describe("Should signal value changes to any listener", function () {
+        it("It should start a 'value changed' signal whenever its value changes", function () {
+          var spy = sinon.spy(widget, 'onValueChanged');
+          widget.setValue(42);
+          expect(spy.called).to.be(true);
+        });
+        it("The signal should use MicroEvent and send the value along", function (done) {
+          widget.bind("counter_changed", function (args) {
+            expect(args[0]).to.be(1);
+            done();
+          });
+          widget.onValueChanged();
+        })
+      });
 
-		it("trigger counter_changed event with new value", function(done){
-			widget.value(data.initialValue);
-
-			widget.bind("counter_changed", function(value) {
-				expect(value).to.be(data.finalValue);
-				done();
-			});
-
-			button.click();
-		});
-	}
-
-	beforeEach(function(){
-		dom = $("<div><a class='minus'>-</a>" + 
-						"<span class='counter'></span>" + 
-						"<a class='plus'>+</a></div>");
-		counter = dom.find(".counter");
-		widget = new widgets.CounterWidget(dom);
-	}); 
-
-	it("should initialize count in one", function(){
-		expect(widget.value()).to.be(1);
-		expect(counter.html()).to.be("1");
-	});
-
-	it("should set counter value", function() {
-		widget.value(5);
-
-		expect(widget.value()).to.be(5);
-		expect(counter.html()).to.be("5");
-	});
-
-	describe("minus button", function(){
-		describeButtonResult(".minus", { initialValue: 5, finalValue: 4 });
-	});
-
-	describe("plus button", function() {
-		describeButtonResult(".plus", { initialValue: 5, finalValue: 6 });
-	});
-});
+      it("Plus button should add 1 to the counter", function () {
+        plus.click();
+        expect(widget.value).to.be(2);
+        expect(counter.html()).to.be("" + 2);
+      });
+      it("Minus button should subtract 1 from the counter", function () {
+        minus.click();
+        expect(widget.value).to.be(0);
+        expect(counter.html()).to.be("" + 0);
+      });
+    }
+)
+;
