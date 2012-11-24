@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+		<script type="text/javascript" src="../lib/microevent.js"></script>
+		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" src="rememberTheCombination.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				new app.Game($("#game"));
+			});
+		</script>
+		<style type="text/css">
+			body { font-family: "open sans"; font-size: 20px;}
+			.counter-widget { margin: 15px; }
+			.counter-widget a { 
+				background: #eee;
+				border: 1px solid #ddd;
+				text-decoration: none;
+			} 
+			.counter-widget a:hover {
+				background: #888;
+				color: #fff;
+			}
+			.counter-widget span {
+				background: #f3f3f3;
+			}
+			.counter-widget a, span { 
+				display: inline-block;
+				padding: 10px; 
+				width: 80px;
+				text-align: center;
+			}
+			h1 { font-weight: 300;}
+		</style>
+	</head>
+	<body>
+		<h1>Remember the combination</h2>
+		<div id="game" class="counter-widget">
+			<span class='generatedCombination'></span>
+			<a href="#" class='start'>Start</a>
+			<input type="text" name="typedCombination" class='typedCombination'></span>
+			<a href="#" class='guess'>Guess</a>
+		</div>
+
+</html>
