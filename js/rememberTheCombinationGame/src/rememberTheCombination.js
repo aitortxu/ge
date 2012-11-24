@@ -4,26 +4,50 @@ var app = (function(ns, MicroEvent, undefined) {
 	'use strict';
 	ns = ns || {};
 
-	var Game = function(dom) {
-		var generatedCombinationElement = dom.find(".generatedCombination");
-		var start_button = dom.find(".start");
-		var guess_button = dom.find(".guess");
+	function start_clicked(event) {
+		console.log("start_button");
+		console.log(this);
+		this.generatedCombinationDom.innerHTML = this.game.startGame();
 
-		var typedCombination = "";
-		var generatedCombination = "";
+	}
 
-		function start_clicked(event) {
-			console.log("start_button");
+	function guess_clicked(event) {
+		console.log("guess_button");
+		console.log(this.typedCombinationDom.value);
+		if (this.game.isAnswerCorrect(this.typedCombinationDom.value)){
+			alert("YOU WIN!!");
 		}
-
-		function guess_clicked(event) {
-			console.log("guess_button");
+		else {
+			alert("UOUOUOUOUOU!!!!!!TRY AGAIN!!");
 		}
+	}
 
-		start_button.on('click', start_clicked.bind(this));
-		guess_button.on('click', guess_clicked.bind(this));
+	var GameWidget = function(generatedCombinationDom, typedCombinationDom) {
+		this.generatedCombinationDom  = generatedCombinationDom;
+		this.typedCombinationDom = typedCombinationDom;
+		this.game = new Game();
 
-		MicroEvent.mixin(Game);
+		MicroEvent.mixin(GameWidget);
+	};
+
+	GameWidget.prototype.attachStart = function (button) {
+		var self = this;
+		button.onclick = function () {
+			start_clicked.call(self);
+		};
+	};
+	GameWidget.prototype.attachGuess = function (button) {
+		var self = this;
+		button.onclick = function () {
+			guess_clicked.call(self);
+		};
+	};
+
+	GameWidget.factory = function (dom) {
+		var widget = new GameWidget(dom.find(".generatedCombination")[0], dom.find(".typedCombination")[0]);
+		widget.attachStart(dom.find('.start')[0]);
+		widget.attachGuess(dom.find('.guess')[0]);
+		return widget;
 	};
 
 	var CombinationCreator = function(){
@@ -33,25 +57,30 @@ var app = (function(ns, MicroEvent, undefined) {
 		return '12345';
 	};
 
-	var GameChecker = function(){
+	var Game = function(){
 		this.typedCombination = "";
 		this.generatedCombination = "";
 	};
 
-	GameChecker.prototype.startGame = function(){
+	Game.prototype.startGame = function(){
+		console.log("StarGame");
 		var cc = new CombinationCreator();
 		this.generatedCombination = cc.newCombination();
+		console.log(this);
+		return this.generatedCombination;
 	};
 
-	GameChecker.prototype.correctCombination = function(){
-		return (this.typedCombination === this.generatedCombination);
+	Game.prototype.isAnswerCorrect = function(typedCombination){
+		console.log("Typed is " + typedCombination);
+		console.log("Generated is " + this.generatedCombination);
+		return (typedCombination === this.generatedCombination);
 	};
 
 	MicroEvent.mixin(CombinationCreator);
 
 	ns.CombinationCreator = CombinationCreator;
-	ns.GameChecker = GameChecker;
 	ns.Game = Game;
+	ns.GameWidget = GameWidget;
 
 	if (typeof module !== 'undefined' && 'exports' in module) {
 		module.exports = ns; 
