@@ -7,7 +7,10 @@ var app = (function(ns, MicroEvent, undefined) {
 	function start_clicked(event) {
 		console.log("start_button");
 		console.log(this);
-		this.generatedCombinationDom.innerHTML = this.game.startGame();
+		this.generatedCombinationDom.innerHTML = this.game.getCombinationAndstartGame();
+		setTimeout(function(thisObj){
+			thisObj.generatedCombinationDom.innerHTML = "";
+		}, 1000, this);
 
 	}
 
@@ -54,7 +57,8 @@ var app = (function(ns, MicroEvent, undefined) {
 	};
 
 	CombinationCreator.prototype.newCombination = function(){
-		return '12345';
+		//return '12345';
+		return Math.floor(Math.random()*9999);
 	};
 
 	var Game = function(){
@@ -62,7 +66,7 @@ var app = (function(ns, MicroEvent, undefined) {
 		this.generatedCombination = "";
 	};
 
-	Game.prototype.startGame = function(){
+	Game.prototype.getCombinationAndstartGame = function(){
 		console.log("StarGame");
 		var cc = new CombinationCreator();
 		this.generatedCombination = cc.newCombination();
@@ -71,9 +75,9 @@ var app = (function(ns, MicroEvent, undefined) {
 	};
 
 	Game.prototype.isAnswerCorrect = function(typedCombination){
-		console.log("Typed is " + typedCombination);
-		console.log("Generated is " + this.generatedCombination);
-		return (typedCombination === this.generatedCombination);
+		console.log("Typed is " + typedCombination.typeof);
+		console.log("Generated is " + this.generatedCombination.typeof);
+		return (typedCombination == this.generatedCombination);
 	};
 
 	MicroEvent.mixin(CombinationCreator);
