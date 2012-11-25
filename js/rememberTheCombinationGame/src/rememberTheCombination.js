@@ -7,11 +7,11 @@ var app = (function(ns, MicroEvent, undefined) {
 	function start_clicked(event) {
 		console.log("start_button");
 		console.log(this);
-		this.game.startGame()
-		this.generatedCombinationDom.innerHTML = this.game.generatedCombination;
-		this.typedCombinationDom.value = "";
+		this.startGame();
+		//this.generatedCombinationDom.innerHTML = this.game.generatedCombination;
+		//this.typedCombinationDom.value = "";
 		setTimeout(function(thisObj){
-			thisObj.generatedCombinationDom.innerHTML = "";
+			thisObj.hideCombination();
 		}, 1000, this);
 
 	}
@@ -48,6 +48,14 @@ var app = (function(ns, MicroEvent, undefined) {
 		};
 	};
 
+	GameWidget.prototype.startGame = function () {
+		this.game.startGame();
+		this.generatedCombinationDom.innerHTML = this.game.generatedCombination;
+	};
+	GameWidget.prototype.hideCombination = function () {
+		this.generatedCombinationDom.innerHTML = "";
+	};
+
 	GameWidget.factory = function (dom) {
 		var widget = new GameWidget(dom.find(".generatedCombination")[0], dom.find(".typedCombination")[0]);
 		widget.attachStart(dom.find('.start')[0]);
@@ -72,15 +80,13 @@ var app = (function(ns, MicroEvent, undefined) {
 		console.log("StarGame");
 		var cc = new CombinationCreator();
 		this.generatedCombination = cc.newCombination();
-		console.log(this);
-		return this.generatedCombination;
 	};
 
 	Game.prototype.isAnswerCorrect = function(typedCombination){
 		return (typedCombination == this.generatedCombination);
 	};
 
-	MicroEvent.mixin(CombinationCreator);
+	//MicroEvent.mixin(CombinationCreator);
 
 	ns.CombinationCreator = CombinationCreator;
 	ns.Game = Game;
