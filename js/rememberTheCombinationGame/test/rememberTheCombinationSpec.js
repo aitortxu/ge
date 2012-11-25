@@ -1,4 +1,6 @@
 var expect = require('expect.js');
+var sinon = require('sinon');
+var $ = require("jquery")
 var app = require("../src/rememberTheCombination.js");
 
 
@@ -24,7 +26,7 @@ describe('checking the typed combination', function(){
 	var game = new app.Game();
 	game.startGame();
 	game.typedCombination = game.generatedCombination;
-	expect(game.isAnswerCorrect(game.generatedCombination)).to.be(true); 
+	expect(game.isAnswerCorrect(game.generatedCombination)).to.be(true);
   });
   it('get false if the combination is not correct', function(){
 	var game = new app.Game();
@@ -33,9 +35,25 @@ describe('checking the typed combination', function(){
   });
 });
 describe('start game', function(){
-  it.skip('when press "start game" a combination is generated and showed', function(){
-	var gameWidget = new app.GameWidget.factory()
+  it('when press "start game" a combination is generated and showed', function(){
+	var dom = $("<div id='game' class='counter-widget'>" +
+			"<span class='generatedCombination'></span>" +
+			"<a href='#' class='start'>Start</a>" +
+			"<input type='text' name='typedCombination' class='typedCombination'></span>" +
+			"<a href='#' class='guess'>Guess</a>" +
+			"</div>");
+	var gameWidget = new app.GameWidget.factory(dom);
 	gameWidget.startGame();
-	expect(gameWidget.generatedCombinationDom).not.to.be("pp");
+	expect(gameWidget.generatedCombinationDom.innerHTML).not.to.be("");
+  });
+  it('without press "start game" no combination is generated', function(){
+	var dom = $("<div id='game' class='counter-widget'>" +
+			"<span class='generatedCombination'></span>" +
+			"<a href='#' class='start'>Start</a>" +
+			"<input type='text' name='typedCombination' class='typedCombination'></span>" +
+			"<a href='#' class='guess'>Guess</a>" +
+			"</div>");
+	var gameWidget = new app.GameWidget.factory(dom);
+	expect(gameWidget.generatedCombinationDom.innerHTML).to.be("");
   });
 });
