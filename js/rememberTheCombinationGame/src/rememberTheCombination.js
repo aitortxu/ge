@@ -1,4 +1,4 @@
-//var MicroEvent = require('microevent');
+var MicroEvent = require('microevent');
 
 var app = (function(ns, MicroEvent, undefined) {
 	'use strict';
@@ -7,7 +7,9 @@ var app = (function(ns, MicroEvent, undefined) {
 	function start_clicked(event) {
 		console.log("start_button");
 		console.log(this);
-		this.generatedCombinationDom.innerHTML = this.game.getCombinationAndstartGame();
+		this.game.startGame()
+		this.generatedCombinationDom.innerHTML = this.game.generatedCombination;
+		this.typedCombinationDom.value = "";
 		setTimeout(function(thisObj){
 			thisObj.generatedCombinationDom.innerHTML = "";
 		}, 1000, this);
@@ -66,7 +68,7 @@ var app = (function(ns, MicroEvent, undefined) {
 		this.generatedCombination = "";
 	};
 
-	Game.prototype.getCombinationAndstartGame = function(){
+	Game.prototype.startGame = function(){
 		console.log("StarGame");
 		var cc = new CombinationCreator();
 		this.generatedCombination = cc.newCombination();
@@ -75,8 +77,6 @@ var app = (function(ns, MicroEvent, undefined) {
 	};
 
 	Game.prototype.isAnswerCorrect = function(typedCombination){
-		console.log("Typed is " + typedCombination.typeof);
-		console.log("Generated is " + this.generatedCombination.typeof);
 		return (typedCombination == this.generatedCombination);
 	};
 

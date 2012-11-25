@@ -22,17 +22,15 @@ describe('combinationCreator', function(){
 });
 describe('checking the typed combination', function(){
   it('get true if the combination is correct', function(){
-	var gameChecker = new app.GameChecker();
-	gameChecker.startGame();
-	gameChecker.typedCombination = "12345";
-	expect(gameChecker.typedCombination).to.be.equal(gameChecker.generatedCombination);
-	expect(gameChecker.correctCombination()).to.be(true);
+	var game = new app.Game();
+	game.startGame();
+	game.typedCombination = game.generatedCombination;
+	expect(game.isAnswerCorrect(game.generatedCombination)).to.be(true);
   });
   it('get false if the combination is not correct', function(){
-	var gameChecker = new app.GameChecker();
-	gameChecker.startGame();
-	gameChecker.typedCombination = "56789";
-	expect(gameChecker.correctCombination()).to.be(false);
+	var game = new app.Game();
+	game.startGame();
+	expect(game.isAnswerCorrect("respuesta incorrecta")).to.be(false);
   });
 });
 describe('star game', function(){
